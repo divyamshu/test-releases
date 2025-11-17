@@ -1,15 +1,8 @@
-import requests
-import base64
-from typing import Optional
+from imports import Optional, json, requests, base64
+from LogicalHandler import get_environment_variables
 
 class GitHubFileReader:
     def __init__(self, token: Optional[str] = None):
-        """
-        Initialize GitHub API client.
-        
-        Args:
-            token: GitHub Personal Access Token (optional for public repos)
-        """
         self.base_url = "https://api.github.com"
         self.headers = {
             "Accept": "application/vnd.github+json",
@@ -18,26 +11,11 @@ class GitHubFileReader:
         if token:
             self.headers["Authorization"] = f"Bearer {token}"
     
-    def get_file_content(self, owner: str, repo: str, file_path: str, 
-                        branch: str = "main") -> dict:
-        """
-        Get file content from a GitHub repository.
-        
-        Args:
-            owner: Repository owner (username or organization)
-            repo: Repository name
-            file_path: Path to the file in the repository
-            branch: Branch name (default: main)
-            
-        Returns:
-            Dictionary with file content and metadata
-        """
+    def get_file_content(self, owner: str, repo: str, file_path: str, branch: str = "main") -> dict:
         url = f"{self.base_url}/repos/{owner}/{repo}/contents/{file_path}"
         params = {"ref": branch}
-        print(url)
         response = requests.get(url, headers=self.headers, params=params)
         response.raise_for_status()
-        
         data = response.json()
         
         # Decode base64 content
@@ -46,6 +24,7 @@ class GitHubFileReader:
         else:
             content = data.get("content", "")
         
+        print(get_environment_variables(content))
         return {
             "content": content,
             "name": data.get("name"),
@@ -55,3 +34,4 @@ class GitHubFileReader:
             "url": data.get("html_url"),
             "download_url": data.get("download_url")
         }
+    
