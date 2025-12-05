@@ -1,9 +1,10 @@
 from imports import Optional, json, requests, base64
 from LogicalHandler import get_environment_variables
+from config import GITHUB_API_BASE_URL
 
 class GitHubFileReader:
     def __init__(self, token: Optional[str] = None):
-        self.base_url = "https://api.github.com"
+        self.base_url = GITHUB_API_BASE_URL
         self.headers = {
             "Accept": "application/vnd.github+json",
             "X-GitHub-Api-Version": "2022-11-28"

@@ -1,11 +1,9 @@
 from imports import requests, os, Optional, Dict
-from config import WEBHOOK_SECRET, GITHUB_API_TOKEN, GITHUB_OWNER, GITHUB_REPO, GITHUB_FILE_PATH, HOST, PORT, ENVIRONMENT
-
-
+from config import WEBHOOK_SECRET, GITHUB_API_BASE_URL, GITHUB_API_TOKEN, GITHUB_OWNER, GITHUB_REPO, GITHUB_FILE_PATH, HOST, PORT, ENVIRONMENT
 
 class GitHubTagManager:
     def __init__(self, token: Optional[str] = None):
-        self.base_url = "https://api.github.com"
+        self.base_url = GITHUB_API_BASE_URL
         self.headers = {
             "Accept": "application/vnd.github+json",
             "X-GitHub-Api-Version": "2022-11-28"
